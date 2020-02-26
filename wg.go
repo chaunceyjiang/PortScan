@@ -38,3 +38,6 @@ func (swg *sizeWG) Done() {
 	<-swg.pool
 	swg.wg.Done()
 }
+func (swg *sizeWG) Wait() {
+	swg.wg.Wait()
+}

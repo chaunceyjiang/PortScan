@@ -77,7 +77,9 @@ func getAllPort(port string) []int {
 				log.Printf("%v 端口解析错误", v)
 				continue
 			}
-			ports = append(ports, p)
+			if p >= 0 && p <= 65535 {
+				ports = append(ports, p)
+			}
 		}
 	}
 	return ports
@@ -95,7 +97,9 @@ func extendPort(port string) ([]int, error) {
 		return nil, fmt.Errorf("%w 端口解析错误", err)
 	}
 	for i := start; i <= end; i++ {
-		ports = append(ports, i)
+		if i >= 0 && i <= 65535 {
+			ports = append(ports, i)
+		}
 	}
 	return ports, nil
 }
