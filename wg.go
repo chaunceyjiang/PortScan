@@ -11,7 +11,7 @@ type sizeWG struct {
 	wg   sync.WaitGroup
 }
 
-func (swg *sizeWG) New(size int) *sizeWG {
+func NewSizeWG(size int) *sizeWG {
 	t := math.MaxInt16
 	if size > 0 && size < t {
 		t = size
