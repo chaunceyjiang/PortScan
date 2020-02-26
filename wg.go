@@ -7,7 +7,6 @@ import (
 )
 
 type sizeWG struct {
-	size int
 	pool chan struct{}
 	wg   sync.WaitGroup
 }
