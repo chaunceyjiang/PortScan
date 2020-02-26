@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"net"
 	"strconv"
@@ -53,7 +54,48 @@ func extendIP(ip string) ([]string, error) {
 	var ips []string
 	for s := start; s <= end; s++ {
 		startIP[3] = strconv.Itoa(s)
-		ips = append(ips,strings.Join(startIP,"."))
+		ips = append(ips, strings.Join(startIP, "."))
 	}
 	return ips, nil
+}
+
+func getAllPort(port string) []int {
+	var ports []int
+	portList := strings.Split(port, ",")
+	for _, v := range portList {
+		if strings.Contains(v, "-") {
+			p, err := extendPort(v)
+			if err != nil {
+				log.Printf("%v 端口解析错误", v)
+				continue
+			}
+			ports = append(ports, p...)
+
+		} else {
+			p, err := strconv.Atoi(v)
+			if err != nil {
+				log.Printf("%v 端口解析错误", v)
+				continue
+			}
+			ports = append(ports, p)
+		}
+	}
+	return ports
+}
+
+func extendPort(port string) ([]int, error) {
+	var ports []int
+	ipList := strings.Split(port, "-")
+	start, err := strconv.Atoi(ipList[0])
+	if err != nil {
+		return nil, fmt.Errorf("%w 端口解析错误", err)
+	}
+	end, err := strconv.Atoi(ipList[1])
+	if err != nil {
+		return nil, fmt.Errorf("%w 端口解析错误", err)
+	}
+	for i := start; i <= end; i++ {
+		ports = append(ports, i)
+	}
+	return ports, nil
 }
